@@ -33,7 +33,7 @@ function LoginScreen({ navigation }) {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        Alert.alert('Thành công', result.message);
+        // Alert.alert('Thành công', result.message);
         // Chuyển hướng sau khi đăng nhập thành công
         navigation.replace('Home'); // Chuyển hướng đến màn hình Home
       } else {
