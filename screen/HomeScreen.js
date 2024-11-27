@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ImageBackground, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../screen/UserContext'; // Thêm import này
 const backgroundImage = require('../assets/home.jpg');
+
 
 function HomeScreen() {
   const navigation = useNavigation();
+  const { userData } = useContext(UserContext);
 
   return (
     <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
+
+
       <View style={styles.container}>
         {/* Nội dung chính */}
+        <Text style={styles.text}>Chào mừng, {userData?.fullname || 'Người dùng'}!</Text>
+        <Text style={styles.text}>Email: {userData?.email}</Text>
+
         <Text style={styles.greeting}>Hệ thống quản lý phòng trọ Thảo Nguyên</Text>
 
         {/* Hộp chứa các nút điều hướng */}
@@ -38,11 +46,38 @@ function HomeScreen() {
     </ImageBackground>
   );
 }
-
 const styles = StyleSheet.create({
   backgroundImage: {
-    flex: 1, // Đảm bảo hình nền chiếm toàn bộ không gian của View
-    justifyContent: 'center', // Căn giữa các phần tử trong ImageBackground
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  greeting: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  userInfoBox: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  infoText: {
+    fontSize: 16,
+    marginVertical: 5,
+  },
+  errorText: {
+    fontSize: 16,
+    color: 'red',
+    textAlign: 'center',
   },
   container: {
     flex: 1,
@@ -55,7 +90,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
-    
+
   },
   buttonBox: {
     flexDirection: 'row', // Đặt các nút theo chiều ngang
@@ -94,5 +129,6 @@ const styles = StyleSheet.create({
     textAlign: 'center', // Đảm bảo chữ căn giữa
   },
 });
+
 
 export default HomeScreen;

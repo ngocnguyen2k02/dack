@@ -1,17 +1,16 @@
-// LoginScreen.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { ImageBackground, Image, Text, TextInput, View, Button, Alert } from 'react-native';
-import styles from '../css/styles'; // Import file styles.js
+import styles from '../css/styles';
+import { UserContext } from '../screen/UserContext'; // Import UserContext
 
 const backgroundImage = require('../assets/background.jpg');
 const logoImage = require('../assets/logomain.png');
 
-// Màn hình đăng nhập
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { setUserData } = useContext(UserContext); // Sử dụng UserContext
 
-  // Xử lý đăng nhập
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Lỗi', 'Vui lòng nhập đầy đủ thông tin.');
@@ -19,23 +18,23 @@ function LoginScreen({ navigation }) {
     }
 
     try {
-      const response = await fetch('http://192.168.1.10:85/datn/api/login.php', {
+      const response = await fetch('http://192.168.56.1:85/datn/api/login.php', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
 
       const result = await response.json();
 
       if (response.ok && result.success) {
-        // Alert.alert('Thành công', result.message);
-        // Chuyển hướng sau khi đăng nhập thành công
-        navigation.replace('Home'); // Chuyển hướng đến màn hình Home
+        // Lưu thông tin người dùng vào UserContext
+        setUserData({
+          fullname: result.data.fullname,
+          email: result.data.email,
+          trangthaihoatdong: result.data.status,
+        });
+
+        navigation.replace('Home'); // Chuyển đến màn hình Home
       } else {
         Alert.alert('Lỗi', result.error || 'Đăng nhập thất bại.');
       }
