@@ -44,6 +44,11 @@ function HomeScreen() {
 
         {/* Navigation Buttons */}
         <View style={styles.buttonBox}>
+        <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('User')}>
+            <Text style={styles.buttonText}>Tài khoản</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate('Contract')}>
